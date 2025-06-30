@@ -1,0 +1,34 @@
+.output-container {
+    padding: 20px;
+    max-width: 100%;
+  }
+  
+  .table-scroll {
+    max-height: 400px;       /* Limit height */
+    overflow-y: auto;        /* Enable vertical scroll */
+    overflow-x: auto;        /* Enable horizontal scroll if needed */
+    border: 1px solid #ffffff;
+    padding: 10px;
+    background-color: #000000;
+  }
+  
+  /* Basic table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 800px;
+  }
+  
+  th, td {
+    border: 1px solid #ffffff;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  
+  thead {
+    background-color: #454545;
+    position: sticky;
+    top: 0;
+  }
+  
