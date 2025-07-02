@@ -1,0 +1,39 @@
+.output-container {
+    padding: 20px;
+    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0; 
+    font-size: clamp(0.4rem, .7vw, .9rem);
+    background-color: grey;
+  }
+  
+  .table-scroll {
+    max-height: 200px;       /* Limit height */
+    overflow-y: auto;        /* Enable vertical scroll */
+    overflow-x: auto;        /* Enable horizontal scroll if needed */
+    border: 1px solid #ffffff;
+    padding: 10px;
+    background-color: #000000;
+  }
+  
+  /* Basic table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 800px;
+  }
+  
+  th, td {
+    border: 1px solid #ffffff;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  
+  thead {
+    background-color: #454545;
+    position: sticky;
+    top: 0;
+  }
+  
