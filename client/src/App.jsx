@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './css/App.css'
 import FilterForm from './components/FilterForm';
-import OutputPage from './components/OutputPage';
+import OutputPage from './OutputPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import OAuthCallbackPage from './OAuthCallbackPage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<FilterForm />} />
           <Route path="/output" element={<OutputPage />} />
+          <Route path="/auth/callback" element={<OAuthCallbackPage />} />
         </Routes>
       </div>
     </BrowserRouter>

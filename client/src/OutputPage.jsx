@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import StudentTable from './StudentTable';  // Adjust path as needed
-import '../OutputPage.css';
+import StudentTable from './components/StudentTable'; 
+import './css/OutputPage.css';
+import Navbar from './components/NavBar';
 
 const OutputPage = () => {
   const location = useLocation();
@@ -21,20 +22,22 @@ const OutputPage = () => {
   );
 
   return (
-    <div className="output-container">
-      <h1>Students</h1>
-
-      <input
-        type="text"
-        placeholder="Search by gender, major or GPA"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: '1rem', padding: '0.5rem', width: '300px' }}
-      />
-
-      <StudentTable students={filteredData} />
-    </div>
+    <>
+      <Navbar />  {/* Outside container */}
+  
+      <div className="output-container">
+        <h1>Students</h1>
+        <input
+          type="text"
+          placeholder="Search by gender, major or GPA"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ marginBottom: '1rem', padding: '0.5rem', width: '300px' }}
+        />
+        <StudentTable students={filteredData} />
+      </div>
+    </>
   );
-};
+}
 
 export default OutputPage;

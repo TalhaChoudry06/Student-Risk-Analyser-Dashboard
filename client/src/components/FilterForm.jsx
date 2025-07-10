@@ -7,15 +7,12 @@ const FilterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Collect all form data
     const form = e.target;
 
-    // For checkboxes with same name "major", get all checked values as array
     const majors = Array.from(form.major)
       .filter(input => input.checked)
       .map(input => input.value);
 
-    // Construct JSON payload
     const payload = {
       age: Number(form.age.value),
       gender: form.gender.value,
@@ -42,7 +39,6 @@ const FilterForm = () => {
 
       const data = await res.json();
       console.log(data)
-      // Redirect to output page with response data
       navigate('/output', { state: { students: data.students } });
 
     } catch (error) {

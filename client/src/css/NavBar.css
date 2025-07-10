@@ -1,0 +1,32 @@
+.navbar {
+    position: fixed;  /* Fix it at top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    z-index: 1000;  /* Make sure it stays on top */
+    align-items: center;  /* vertically center items */
+    justify-content: space-between; /* space between links and button */
+  }
+
+.login-button {
+    padding: 0.5rem 1rem;
+    align-items: right;
+    justify-content: space-between;
+}
+
+.nav-links {
+display: flex;        /* make the ul a flex container */
+list-style: none;     /* remove bullet points */
+margin: 0;
+padding: 0;
+gap: 20px;            /* space between links */
+}
+
+/* Push content down so navbar doesn’t overlap */
+.output-container {
+padding-top: 70px; /* Adjust to navbar height */
+}
+  

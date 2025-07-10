@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import Student from './models/student_data.js';
+import axios from 'axios';
 
 const app = express();
 
@@ -20,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/local', {
   console.log('Error connecting to database', err);
 });
 
-const port = process.env.PORT || 3000; // Use the port provided by the host or default to 3000
+const port = 3000; // Use the port provided by the host or default to 3000
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,8 +34,8 @@ app.post('/api/search', async (req, res) => {
   try{
     const data = req.body;
     const major = data.major;
-    console.log(data);
-    console.log(major);
+    // console.log(data);
+    // console.log(major);
 
     const students = await Student.find({major: major});
     // console.log(student);
@@ -44,6 +45,47 @@ app.post('/api/search', async (req, res) => {
     res.status(500).json({ success: false, error: 'Server error' });
   }
 });
+
+app.post('/api/auth/google', async (req, res) => {
+
+  const { code } = req.body
+  const response = await axios.post('https://oauth2.googleapis.com/token', {
+    code, 
+    client_id: process.env.VITE.REACT_APP_GOOGLE_CLIENT_ID,
+    client_secret: process.env.VITE.REACT_APP_GOOGLE_CLIENT_SECRET,
+    redirect_uri: 'http://localhost:5173/auth/callback',
+    grant_type: 'authorization_code',
+  });
+  
+  const { id_token, access_token } = response.data;
+
+  // Decode the ID token (JWT) to get user info
+  const ticket = await client.verifyIdToken({
+    idToken: id_token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload(); // { email, name, sub, picture, etc. }
+
+  // demo dummy object
+  const user = {
+    id: payload.sub,          
+    email: payload.email,
+    name: payload.name,
+    picture: payload.picture,
+  };
+
+  // Create a session (JWT or cookie)
+  const sessionToken = createJwtForUser(user);
+
+  // Send token to frontend (or set cookie)
+  res.cookie('token', sessionToken, { 
+    httpOnly: true,
+    secure: true,
+  });
+  res.json({ user });
+});
+
 
 // try{
 //   const student = await Student.findOne({ _id: "S002" });

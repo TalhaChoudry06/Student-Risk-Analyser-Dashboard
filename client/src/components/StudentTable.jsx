@@ -1,5 +1,5 @@
 import React from 'react';
-import '../StudentTable.css';
+import '../css/StudentTable.css';
 
 const StudentTable = ({ students }) => {
   if (!students || students.length === 0) {
