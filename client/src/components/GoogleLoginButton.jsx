@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GoogleLoginButton = () => {
-  console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  //console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
     const handleLogin = () => {
       const params = new URLSearchParams({

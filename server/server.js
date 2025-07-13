@@ -38,13 +38,25 @@ app.post('/api/search', async (req, res) => {
     // console.log(major);
 
     const students = await Student.find({major: major});
-    // console.log(student);
     res.json({ success: true, students });
   } catch (err) {
     console.error('Error searching students by major:', err);
     res.status(500).json({ success: false, error: 'Server error' });
   }
 });
+
+app.post('/api/risklevel', async (req, res) => {
+  try{
+    const data = req.body;
+    const risk = await fetch('http://localhost:5000/api/classifier', { method: 'POST', headers: {'Content-Type':'application/json' }, body: JSON.stringify(data)});
+    const riskData = await risk.json();
+    console.log("risk level works.", riskData.risk_level);
+    res.json({success: true, risk});
+  } catch (err) {
+    console.log(err, 'when search risk level');
+    res.status(500).json({success: false, error: 'server error'});
+  }
+})
 
 app.post('/api/auth/google', async (req, res) => {
 

@@ -27,6 +27,18 @@ const FilterForm = () => {
       forum_participation_count: Number(form.forum_participation_count.value),
       video_completion_rate: Number(form.video_completion_rate.value),
     };
+    
+    try {
+      const res = await fetch('http://localhost:3000/api/risklevel', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const risklevel = await res.json();
+      console.log(risklevel)
+    } catch(error){
+      console.log(error, "when classifing")
+    }
 
     try {
       const res = await fetch('http://localhost:3000/api/search', {
