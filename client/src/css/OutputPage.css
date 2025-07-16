@@ -1,0 +1,25 @@
+.output-wrapper {
+    display: flex;
+    place-items: unset;
+    gap: 25rem; /* space between the two boxes */
+    padding: 0;
+    margin: 2rem;
+    align-items: flex-start;
+  }
+
+.output-wrapper h1 {
+    text-align: center;   
+}
+
+.student-search-input {
+  padding: 0.5rem 1rem;
+  display: block;
+  margin: 0 auto;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}

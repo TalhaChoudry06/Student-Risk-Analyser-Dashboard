@@ -1,0 +1,25 @@
+.risk-box {
+  padding: 1.5rem;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background-color: #f8f8f8;
+  color: #111;
+  text-align: center;
+}
+
+.metrics-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metrics-input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import RiskTable from './riskTable'; 
+import '../css/FilterForm.css'
 
 const FilterForm = () => {
   const navigate = useNavigate();
@@ -27,17 +29,17 @@ const FilterForm = () => {
       forum_participation_count: Number(form.forum_participation_count.value),
       video_completion_rate: Number(form.video_completion_rate.value),
     };
-    
+    let risklevel;
     try {
       const res = await fetch('http://localhost:3000/api/risklevel', {
         method: 'POST',
         headers: {'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const risklevel = await res.json();
-      console.log(risklevel)
+      risklevel = await res.json();
+      risklevel = risklevel.riskData.risk_level;
     } catch(error){
-      console.log(error, "when classifing")
+      console.log(error)
     }
 
     try {
@@ -48,10 +50,8 @@ const FilterForm = () => {
       });
 
       if (!res.ok) throw new Error('Network response was not ok');
-
       const data = await res.json();
-      console.log(data)
-      navigate('/output', { state: { students: data.students } });
+      navigate('/output', { state: { students: data.students, risklevel} });
 
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -60,7 +60,7 @@ const FilterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="filter-form" onSubmit={handleSubmit}>
       <h2>Student Data Editor</h2>
 
       <fieldset>

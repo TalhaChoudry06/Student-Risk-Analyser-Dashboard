@@ -45,13 +45,14 @@ app.post('/api/search', async (req, res) => {
   }
 });
 
+// 
 app.post('/api/risklevel', async (req, res) => {
   try{
     const data = req.body;
     const risk = await fetch('http://localhost:5000/api/classifier', { method: 'POST', headers: {'Content-Type':'application/json' }, body: JSON.stringify(data)});
     const riskData = await risk.json();
     console.log("risk level works.", riskData.risk_level);
-    res.json({success: true, risk});
+    res.json({success: true, riskData});
   } catch (err) {
     console.log(err, 'when search risk level');
     res.status(500).json({success: false, error: 'server error'});
