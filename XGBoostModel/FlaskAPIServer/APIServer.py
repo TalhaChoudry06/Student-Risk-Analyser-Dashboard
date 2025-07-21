@@ -99,7 +99,6 @@ class ChartGenerator(Resource):
                 plot_boxplot_major(item)
 
             elif category == 'Scatter & Regression':
-                # item format: "risk_level_num vs attendance_rate" etc.
                 if ' vs ' in item:
                     x, y = item.split(' vs ')
                     plot_scatter(x.strip(), y.strip())
@@ -107,7 +106,6 @@ class ChartGenerator(Resource):
                     return {"error": f"Invalid scatter item format: {item}"}, 400
 
             elif category == 'Correlation Heatmap':
-                # Only one item expected "Correlation Heatmap"
                 plot_correlation_heatmap()
 
             elif category == 'Categorical Counts':
@@ -117,7 +115,6 @@ class ChartGenerator(Resource):
                 plot_boxplot_risk(item)
 
             elif category == 'Pairplot':
-                # Only one item expected "Pairplot"
                 plot_pairplot()
 
             elif category == 'Violin Plots by Gender':
@@ -126,7 +123,6 @@ class ChartGenerator(Resource):
             else:
                 return {"error": f"Unknown category: {category}"}, 400
 
-            # Save to in-memory buffer
             img = io.BytesIO()
             plt.savefig(img, format='png')
             img.seek(0)

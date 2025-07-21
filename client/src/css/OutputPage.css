@@ -3,7 +3,7 @@
     place-items: unset;
     align-items: center;  
     flex-wrap: wrap;
-    gap: 2rem; /* space between the two boxes */
+    gap: 2rem; 
     padding: 0;
     margin: 2rem;
     align-items: flex-start;

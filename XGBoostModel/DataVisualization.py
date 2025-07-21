@@ -96,12 +96,10 @@ def plot_pie_chart(col):
     plt.axis('equal')
     # plt.show()
 
-# Add risk_level_num vs GPA as a separate special pair (you can add to the same list or separately)
 special_pairs = [
     ('risk_level_num', 'GPA')
 ]
 
-# Update the categories dict to include these special pairs in "Scatter & Regression"
 categories = {
     "Histograms": [(col, lambda c=col: plot_histogram(c)) for col in numeric_cols],
     "Boxplots by Major": [(col, lambda c=col: plot_boxplot_major(c)) for col in numeric_cols],

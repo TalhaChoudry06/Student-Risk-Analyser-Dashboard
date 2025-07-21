@@ -13,12 +13,11 @@ const OAuthCallbackPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code }),
-        credentials: 'include', // if you're using cookies
+        credentials: 'include',
       })
         .then(res => res.json())
         .then(data => {
           console.log('Logged in as', data.user);
-          // Set context or redirect to dashboard
           navigate('/output');
         });
     }
