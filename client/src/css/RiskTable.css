@@ -1,7 +1,9 @@
 .risk-box {
-  padding: 1.5rem;
+  padding: 2rem;
   border: 2px solid #000;
   border-radius: 12px;
+  width: 10rem;
+  height: 10rem;
   background-color: #f8f8f8;
   color: #111;
   text-align: center;

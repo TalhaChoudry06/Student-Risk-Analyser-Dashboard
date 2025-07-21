@@ -2,10 +2,23 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 import joblib
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+from flask import request, jsonify
+import sys
+import os
+from flask_cors import CORS
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+from DataVisualization import (plot_pie_chart,plot_histogram,plot_boxplot_major,plot_scatter,plot_cat_count,plot_boxplot_risk,plot_pairplot,plot_violin_gender,plot_correlation_heatmap)
 classifier = joblib.load("XGBoostModel/FlaskAPIServer/xgb_pipeline_model.joblib")
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 def ensure_scalar(val):
     if isinstance(val, list):
@@ -65,8 +78,70 @@ class XGBoostClassifier(Resource):
             return {"risk_level": "Low"}, 200
         else:
             return {"risk_level": "Unknown"}, 400
-    
+
+
+class ChartGenerator(Resource):
+    def post(self):
+        data = request.get_json()
+        category = data.get('category')
+        item = data.get('item')
+
+        print(f"Received request for category: {category}, item: {item}")
+
+        try:
+            if category == 'Pie Charts':
+                plot_pie_chart(item)
+
+            elif category == 'Histograms':
+                plot_histogram(item)
+
+            elif category == 'Boxplots by Major':
+                plot_boxplot_major(item)
+
+            elif category == 'Scatter & Regression':
+                # item format: "risk_level_num vs attendance_rate" etc.
+                if ' vs ' in item:
+                    x, y = item.split(' vs ')
+                    plot_scatter(x.strip(), y.strip())
+                else:
+                    return {"error": f"Invalid scatter item format: {item}"}, 400
+
+            elif category == 'Correlation Heatmap':
+                # Only one item expected "Correlation Heatmap"
+                plot_correlation_heatmap()
+
+            elif category == 'Categorical Counts':
+                plot_cat_count(item)
+
+            elif category == 'Boxplots by Risk Level':
+                plot_boxplot_risk(item)
+
+            elif category == 'Pairplot':
+                # Only one item expected "Pairplot"
+                plot_pairplot()
+
+            elif category == 'Violin Plots by Gender':
+                plot_violin_gender(item)
+
+            else:
+                return {"error": f"Unknown category: {category}"}, 400
+
+            # Save to in-memory buffer
+            img = io.BytesIO()
+            plt.savefig(img, format='png')
+            img.seek(0)
+            img_base64 = base64.b64encode(img.read()).decode('utf-8')
+            plt.close()
+            return {"image": img_base64}, 200
+
+        except Exception as e:
+            print(f"Chart generation error: {e}")
+            return {"error": str(e)}, 500
+
+
 api.add_resource(HelloWorld, '/api')
 api.add_resource(XGBoostClassifier, '/api/classifier')
+api.add_resource(ChartGenerator, '/api/generate_chart')
+
 if __name__ == '__main__':
     app.run(debug=True)

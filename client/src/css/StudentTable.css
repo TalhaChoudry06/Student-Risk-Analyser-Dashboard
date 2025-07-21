@@ -11,7 +11,7 @@
   }
   
   .table-scroll {
-    max-height: 200px;       /* Limit height */
+    max-height: 20rem;       /* Limit height */
     overflow-y: auto;        /* Enable vertical scroll */
     overflow-x: auto;        /* Enable horizontal scroll if needed */
     border: 1px solid #ffffff;
@@ -24,7 +24,7 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-    min-width: 800px;
+    min-width: 600px;
   }
   
   th, td {

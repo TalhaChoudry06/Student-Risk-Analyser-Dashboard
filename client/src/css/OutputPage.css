@@ -1,12 +1,16 @@
 .output-wrapper {
     display: flex;
     place-items: unset;
-    gap: 25rem; /* space between the two boxes */
+    align-items: center;  
+    flex-wrap: wrap;
+    gap: 2rem; /* space between the two boxes */
     padding: 0;
     margin: 2rem;
     align-items: flex-start;
   }
-
+.full-width {
+  width: 100%;
+}
 .output-wrapper h1 {
     text-align: center;   
 }

@@ -35,47 +35,66 @@ def plot_histogram(col):
     plt.figure(figsize=(8, 4))
     sns.histplot(studentdata[col], kde=True, bins=30)
     plt.title(f'Distribution of {col}')
-    plt.show()
+    # plt.show()
 
 def plot_boxplot_major(col):
     plt.figure(figsize=(10, 5))
     sns.boxplot(x='major', y=col, data=studentdata)
     plt.title(f'{col} by Major')
     plt.xticks(rotation=45)
-    plt.show()
+    # plt.show()
 
 def plot_scatter(x_col, y_col):
     plt.figure(figsize=(7, 5))
     sns.regplot(x=x_col, y=y_col, data=studentdata, scatter_kws={'alpha':0.5})
-    # Custom y-label if risk_level_num
     ylabel = "Risk Level (numeric)" if y_col == 'risk_level_num' else y_col
     plt.title(f'{ylabel} vs {x_col}')
     plt.ylabel(ylabel)
-    plt.show()
+    # plt.show()
 
 def plot_cat_count(col):
     plt.figure(figsize=(6, 4))
     sns.countplot(x=col, data=studentdata)
     plt.title(f'Count of {col}')
     plt.xticks(rotation=45)
-    plt.show()
+    # plt.show()
 
 def plot_boxplot_risk(col):
     plt.figure(figsize=(10, 5))
     sns.boxplot(x='risk_level', y=col, data=studentdata)
     plt.title(f'{col} by Risk Level')
-    plt.show()
+    # plt.show()
 
 def plot_pairplot():
     sns.pairplot(studentdata, vars=['GPA', 'attendance_rate', 'assignment_submission_rate'], hue='risk_level', corner=True)
     plt.suptitle('Pairplot by Risk Level', y=1.02)
-    plt.show()
+    # plt.show()
 
 def plot_violin_gender(col):
     plt.figure(figsize=(10, 5))
     sns.violinplot(x='gender', y=col, data=studentdata)
     plt.title(f'{col} distribution by Gender')
+    # plt.show()
+
+def plot_correlation_heatmap():
+    plt.figure(figsize=(12, 10)),
+    sns.heatmap(studentdata[numeric_cols].corr(), annot=True, cmap='coolwarm', fmt=".2f", square=True),
+    plt.title('Correlation Matrix'),
     plt.show()
+
+def plot_pie_chart(col):
+    counts = studentdata[col].value_counts()
+    total = counts.sum()
+    threshold = 0.05 * total
+    large = counts[counts >= threshold]
+    small = counts[counts < threshold]
+    if not small.empty:
+        large['Other'] = small.sum()
+    plt.figure(figsize=(7, 7))
+    plt.pie(large, labels=large.index, autopct='%1.1f%%', startangle=140)
+    plt.title(f'Distribution of {col}')
+    plt.axis('equal')
+    # plt.show()
 
 # Add risk_level_num vs GPA as a separate special pair (you can add to the same list or separately)
 special_pairs = [
@@ -90,48 +109,45 @@ categories = {
         [(f'{y} vs {x}', lambda x=x, y=y: plot_scatter(x, y)) for x,y in pairs_to_plot] +
         [(f'{y} vs {x}', lambda x=x, y=y: plot_scatter(x, y)) for x,y in special_pairs]
     ),
-    "Correlation Heatmap": [("Correlation Heatmap", lambda: (
-        plt.figure(figsize=(12, 10)),
-        sns.heatmap(studentdata[numeric_cols].corr(), annot=True, cmap='coolwarm', fmt=".2f", square=True),
-        plt.title('Correlation Matrix'),
-        plt.show()
-    ))],
+    "Correlation Heatmap": [("Correlation Heatmap", plot_correlation_heatmap)],
     "Categorical Counts": [(col, lambda c=col: plot_cat_count(c)) for col in categorical_cols],
     "Boxplots by Risk Level": [(col, lambda c=col: plot_boxplot_risk(c)) for col in numeric_cols],
     "Pairplot": [("Pairplot", plot_pairplot)],
-    "Violin Plots by Gender": [(col, lambda c=col: plot_violin_gender(c)) for col in ['GPA', 'attendance_rate']]
+    "Violin Plots by Gender": [(col, lambda c=col: plot_violin_gender(c)) for col in ['GPA', 'attendance_rate']],
+    "Pie Charts" :[(col, lambda c=col: plot_pie_chart(c)) for col in ['risk_level', 'enrollment_status', 'gender', 'major']]
 }
 # Tkinter GUI
+# if __name__ == '__main__':
 
-root = tk.Tk()
-root.title("Data Visualization Selector")
+#     root = tk.Tk()
+#     root.title("Data Visualization Selector")
 
-frame = ttk.Frame(root, padding=10)
-frame.grid(row=0, column=0, sticky="nsew")
+#     frame = ttk.Frame(root, padding=10)
+#     frame.grid(row=0, column=0, sticky="nsew")
 
-def clear_frame():
-    for widget in frame.winfo_children():
-        widget.destroy()
+#     def clear_frame():
+#         for widget in frame.winfo_children():
+#             widget.destroy()
 
-def show_main_menu():
-    clear_frame()
-    ttk.Label(frame, text="Select a plot category:", font=("Arial", 14)).grid(row=0, column=0, pady=10)
-    for i, category in enumerate(categories.keys(), start=1):
-        btn = ttk.Button(frame, text=category, width=30, command=lambda c=category: show_sub_menu(c))
-        btn.grid(row=i, column=0, pady=5)
+#     def show_main_menu():
+#         clear_frame()
+#         ttk.Label(frame, text="Select a plot category:", font=("Arial", 14)).grid(row=0, column=0, pady=10)
+#         for i, category in enumerate(categories.keys(), start=1):
+#             btn = ttk.Button(frame, text=category, width=30, command=lambda c=category: show_sub_menu(c))
+#             btn.grid(row=i, column=0, pady=5)
 
-def show_sub_menu(category):
-    clear_frame()
-    ttk.Label(frame, text=f"{category} plots:", font=("Arial", 14)).grid(row=0, column=0, pady=10)
-    subplots = categories[category]
+#     def show_sub_menu(category):
+#         clear_frame()
+#         ttk.Label(frame, text=f"{category} plots:", font=("Arial", 14)).grid(row=0, column=0, pady=10)
+#         subplots = categories[category]
 
-    for i, (name, func) in enumerate(subplots, start=1):
-        btn = ttk.Button(frame, text=name, width=40, command=func)
-        btn.grid(row=i, column=0, pady=3)
+#         for i, (name, func) in enumerate(subplots, start=1):
+#             btn = ttk.Button(frame, text=name, width=40, command=func)
+#             btn.grid(row=i, column=0, pady=3)
 
-    back_btn = ttk.Button(frame, text="Back", width=20, command=show_main_menu)
-    back_btn.grid(row=len(subplots) + 1, column=0, pady=15)
+#         back_btn = ttk.Button(frame, text="Back", width=20, command=show_main_menu)
+#         back_btn.grid(row=len(subplots) + 1, column=0, pady=15)
 
-show_main_menu()
+#     show_main_menu()
 
-root.mainloop()
+#     root.mainloop()
