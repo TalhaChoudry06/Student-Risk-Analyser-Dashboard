@@ -1,7 +1,4 @@
-Gotcha! Here's the updated README with a mention that Docker support is **coming soon**:
-
 ---
-
 # 📊 Student Risk Analyser Dashboard
 
 A full-stack **Student Risk Analysis** web application leveraging an XGBoost machine learning model to predict student risk levels based on user input, with interactive data visualizations to support decision-making.
