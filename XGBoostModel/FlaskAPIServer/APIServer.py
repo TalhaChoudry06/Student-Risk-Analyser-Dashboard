@@ -10,11 +10,8 @@ from flask import request, jsonify
 import sys
 import os
 from flask_cors import CORS
-parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
-from DataVisualization import (plot_pie_chart,plot_histogram,plot_boxplot_major,plot_scatter,plot_cat_count,plot_boxplot_risk,plot_pairplot,plot_violin_gender,plot_correlation_heatmap)
-classifier = joblib.load("XGBoostModel/FlaskAPIServer/xgb_pipeline_model.joblib")
+from XGBoostModel.DataVisualization import (plot_pie_chart,plot_histogram,plot_boxplot_major,plot_scatter,plot_cat_count,plot_boxplot_risk,plot_pairplot,plot_violin_gender,plot_correlation_heatmap)
+classifier = joblib.load("xgb_pipeline_model.joblib")
 
 app = Flask(__name__)
 api = Api(app)

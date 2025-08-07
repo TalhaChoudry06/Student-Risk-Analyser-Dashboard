@@ -1,0 +1,15 @@
+services:
+  react-vite-app:
+    image: react-vite-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'
+    container_name: react-vite-container
+    stdin_open: true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
+

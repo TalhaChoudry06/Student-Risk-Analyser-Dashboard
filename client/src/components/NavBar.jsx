@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Navbar.css'; 
+import '../css/NavBar.css'; 
 import GoogleLoginButton from './GoogleLoginButton.jsx'; 
 
 const Navbar = () => {

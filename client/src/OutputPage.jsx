@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import StudentTable from './components/StudentTable'; 
 import './css/OutputPage.css';
 import Navbar from './components/NavBar';
-import RiskTable from './components/riskTable';
+import RiskTable from './components/RiskTable';
 import Charts from './components/charts';
 const OutputPage = () => {
   const location = useLocation();

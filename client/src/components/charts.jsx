@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../css/Charts.css"; 
+import "../css/charts.css"; 
 
 const Charts = ({ graphs }) => {
   const [chartImage, setChartImage] = useState(null);

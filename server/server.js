@@ -14,14 +14,14 @@ app.use(cors({
 app.use(express.json());  
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/local', {
+mongoose.connect('mongodb://mongo:27017/local', {
 }).then(() => {
   console.log('Connected to student_data database');
 }).catch((err) => {
   console.log('Error connecting to database', err);
 });
 
-const port = 3000; // Use the port provided by the host or default to 3000
+const port = 3000; 
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import RiskTable from './riskTable'; 
 import '../css/FilterForm.css'
 
 const FilterForm = () => {

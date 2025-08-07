@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # MongoDB service
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongotestData:/data/db
+    networks:
+      - app-network
+
+  # Backend service
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: mern-server-image
+    container_name: mern-server-container
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    env_file:
+      - ./server/config/config.env
+    stdin_open: true
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - app-network
+
+# Define volumes for persistent data storage
+volumes:
+  mongotestData:
+
+# Define networks
+networks:
+  app-network:
+

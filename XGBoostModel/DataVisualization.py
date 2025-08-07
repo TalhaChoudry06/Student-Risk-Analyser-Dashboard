@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 
 # Load your data
-studentdata = pd.read_csv('data/college_student_management_data.csv')
+studentdata = pd.read_csv('../../data/college_student_management_data.csv')
 sns.set_theme(style="whitegrid")
 
 risk_level_map = {'Low': 0, 'Medium': 1, 'High': 2}
