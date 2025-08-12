@@ -21,7 +21,7 @@ A full-stack **Student Risk Analysis** web application leveraging an XGBoost mac
 * **Dynamic Data Visualization:**
   Visualize risk breakdowns and metrics with Python-powered charts integrated into the dashboard using seaborn and mathplotlib.
 
-* **Docker Compatibility**
+* **Docker Compatibility:**
    Contanerized with docker Compose modeling multi container microservice architecture.
 
 ---
