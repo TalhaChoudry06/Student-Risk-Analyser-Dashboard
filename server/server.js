@@ -1,8 +1,8 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import Student from './models/student_data.js';
-import axios from 'axios';
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const Student = require('./models/student_data.js');
+const axios = require('axios');
 
 const app = express();
 
@@ -10,34 +10,21 @@ app.use(cors({
   origin: 'http://localhost:5173', // your frontend URL
 }));
 
-// parse incoming json bodies
-app.use(express.json());  
-
-// MongoDB connection
-mongoose.connect('mongodb://mongo:27017/local', {
-}).then(() => {
-  console.log('Connected to student_data database');
-}).catch((err) => {
-  console.log('Error connecting to database', err);
-});
-
-const port = 3000; 
-
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+// MongoDB connection
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect('mongodb://mongo:27017/local')
+    .then(() => console.log('Connected to student_data database'))
+    .catch((err) => console.log('Error connecting to database', err));
+}
 
-// Read (GET) all items
+// Routes
 app.post('/api/search', async (req, res) => {
-  try{
-    const data = req.body;
-    const major = data.major;
-    // console.log(data);
-    // console.log(major);
-
-    const students = await Student.find({major: major});
+  try {
+    const { major } = req.body;
+    const students = await Student.find({ major });
     res.json({ success: true, students });
   } catch (err) {
     console.error('Error searching students by major:', err);
@@ -45,53 +32,51 @@ app.post('/api/search', async (req, res) => {
   }
 });
 
-// 
 app.post('/api/risklevel', async (req, res) => {
-  try{
+  try {
     const data = req.body;
-    const risk = await fetch('http://localhost:5000/api/classifier', { method: 'POST', headers: {'Content-Type':'application/json' }, body: JSON.stringify(data)});
+    const risk = await fetch('http://localhost:5000/api/classifier', { 
+      method: 'POST', 
+      headers: { 'Content-Type':'application/json' }, 
+      body: JSON.stringify(data)
+    });
     const riskData = await risk.json();
     console.log("risk level works.", riskData.risk_level);
-    res.json({success: true, riskData});
+    res.json({ success: true, riskData });
   } catch (err) {
     console.log(err, 'when search risk level');
-    res.status(500).json({success: false, error: 'server error'});
+    res.status(500).json({ success: false, error: 'server error' });
   }
-})
+});
 
 app.post('/api/auth/google', async (req, res) => {
-
-  const { code } = req.body
+  const { code } = req.body;
   const response = await axios.post('https://oauth2.googleapis.com/token', {
-    code, 
+    code,
     client_id: process.env.VITE.REACT_APP_GOOGLE_CLIENT_ID,
     client_secret: process.env.VITE.REACT_APP_GOOGLE_CLIENT_SECRET,
     redirect_uri: 'http://localhost:5173/auth/callback',
     grant_type: 'authorization_code',
   });
-  
-  const { id_token, access_token } = response.data;
 
-  // Decode the ID token (JWT) to get user info
+  const { id_token } = response.data;
+
   const ticket = await client.verifyIdToken({
     idToken: id_token,
     audience: process.env.GOOGLE_CLIENT_ID,
   });
 
-  const payload = ticket.getPayload(); // { email, name, sub, picture, etc. }
+  const payload = ticket.getPayload();
 
-  // demo dummy object
   const user = {
-    id: payload.sub,          
+    id: payload.sub,
     email: payload.email,
     name: payload.name,
     picture: payload.picture,
   };
 
-  // Create a session (JWT or cookie)
   const sessionToken = createJwtForUser(user);
 
-  // Send token to frontend (or set cookie)
   res.cookie('token', sessionToken, { 
     httpOnly: true,
     secure: true,
@@ -99,13 +84,13 @@ app.post('/api/auth/google', async (req, res) => {
   res.json({ user });
 });
 
+// Export app so tests can import it without starting the server
+module.exports = app;
 
-// try{
-//   const student = await Student.findOne({ _id: "S002" });
-//   console.log(student);
-//   const unique_majors = await Student.distinct("major");
-//   console.log(unique_majors)
-
-//   } catch (err) {
-//   console.error(err)
-// }
+// Start server only if not in test mode
+if (require.main === module) {
+  const port = 3000;
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+}

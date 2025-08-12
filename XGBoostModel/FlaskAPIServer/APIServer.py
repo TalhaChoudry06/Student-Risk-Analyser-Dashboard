@@ -22,11 +22,6 @@ def ensure_scalar(val):
         return val[0] if val else None
     return val
 
-
-class HelloWorld(Resource):
-    def get(self):
-        return {'message': 'Hello, World!'}
-
 class XGBoostClassifier(Resource):
     def post(self):
         data = request.get_json()
