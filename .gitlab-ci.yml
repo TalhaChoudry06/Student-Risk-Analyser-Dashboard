@@ -20,6 +20,9 @@ test:
 
     # Step 2: Start all services (client, server, mongo) in the background
     - docker-compose -f docker-compose.yml up -d
+    
+    # Install dev dependences
+    - docker-compose exec -T server npm install --only=dev
 
     # Step 3: Run tests in the 'server' container
     - docker-compose -f docker-compose.yml exec -T server npm test
