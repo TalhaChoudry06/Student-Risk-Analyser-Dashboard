@@ -10,7 +10,7 @@ from flask import request, jsonify
 import sys
 import os
 from flask_cors import CORS
-from XGBoostModel.DataVisualization import (plot_pie_chart,plot_histogram,plot_boxplot_major,plot_scatter,plot_cat_count,plot_boxplot_risk,plot_pairplot,plot_violin_gender,plot_correlation_heatmap)
+from DataVisualization import (plot_pie_chart,plot_histogram,plot_boxplot_major,plot_scatter,plot_cat_count,plot_boxplot_risk,plot_pairplot,plot_violin_gender,plot_correlation_heatmap)
 classifier = joblib.load("xgb_pipeline_model.joblib")
 
 app = Flask(__name__)
@@ -127,9 +127,8 @@ class ChartGenerator(Resource):
             return {"error": str(e)}, 500
 
 
-api.add_resource(HelloWorld, '/api')
 api.add_resource(XGBoostClassifier, '/api/classifier')
 api.add_resource(ChartGenerator, '/api/generate_chart')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)

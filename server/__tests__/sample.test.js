@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../server.js');
+
 global.fetch = jest.fn();
 
 describe('risk analyser test', () => {

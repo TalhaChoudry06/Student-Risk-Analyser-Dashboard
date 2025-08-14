@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # MongoDB service
   mongo:
@@ -11,6 +9,10 @@ services:
       - mongotestData:/data/db
     networks:
       - app-network
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
 
   # Backend service
   server:
@@ -32,11 +34,10 @@ services:
     networks:
       - app-network
 
-# Define volumes for persistent data storage
+# Volumes for persistent storage
 volumes:
   mongotestData:
 
-# Define networks
+# Networks for inter-container communication
 networks:
   app-network:
-
